@@ -21,7 +21,7 @@ RUN /usr/sbin/php5enmod mcrypt
 ENV ALLOW_OVERRIDE **False**
 
 #replace and modify apache2.conf and php.ini
-ADD build/apache2.conf /etc/apache2/apache2.conf
+ADD bulid/apache2.conf /etc/apache2/apache2.conf
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini
 
@@ -42,10 +42,10 @@ RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 #open mpm_work module
 RUN a2dismod mpm_prefork
 RUN a2enmod mpm_worker
-ADD build/mpm_worker.conf /etc/apache2/mods-available/mpm_worker.conf
+ADD bulid/mpm_worker.conf /etc/apache2/mods-available/mpm_worker.conf
 
 #replace security.conf
-ADD build/security.conf /etc/apache2/conf-available/security.conf
+ADD bulid/security.conf /etc/apache2/conf-available/security.conf
 
 # Add image configuration and scripts
 ADD run.sh /run.sh
