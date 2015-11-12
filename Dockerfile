@@ -5,6 +5,7 @@ MAINTAINER Fernando Mayo <fernando@tutum.co>
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install \
         curl \
+        autoconf \
         apache2 \
         libapache2-mod-php5 \
         php5-mysql \
@@ -12,6 +13,7 @@ RUN apt-get update && \
         php5-gd \
         php5-curl \
         php-pear \
+        php-dev \
         php-apc && \
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -20,6 +22,17 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini
 
 ENV ALLOW_OVERRIDE **False**
+
+
+#memcache
+RUN pecl channel-update pecl.php.net
+RUN pecl install memcache
+RUN echo "extension=memcache.so" >> /etc/php5/apache2/php.ini
+
+#memcached
+RUN apt-get update
+RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --force-yes memcached php5-memcached
+RUN echo "extension=memcached.so" >> /etc/php5/apache2/php.ini
 
 # Add image configuration and scripts
 ADD run.sh /run.sh
