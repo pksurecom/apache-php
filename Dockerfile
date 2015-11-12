@@ -33,6 +33,10 @@ RUN apt-get update
 RUN DEBIAN_FRONTEND="noninteractive" apt-get install -y --force-yes memcached php5-memcached
 RUN echo "extension=memcached.so" >> /etc/php5/apache2/php.ini
 
+#open rewrite
+RUN a2enmod rewrite
+RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
+
 # Add image configuration and scripts
 ADD run.sh /run.sh
 RUN chmod 755 /*.sh
