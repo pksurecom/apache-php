@@ -39,10 +39,9 @@ RUN echo "extension=memcached.so" >> /etc/php5/apache2/php.ini
 RUN a2enmod rewrite
 RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
-#open mpm_work module
-RUN a2dismod mpm_prefork
-RUN a2enmod mpm_worker
-ADD bulid/mpm_worker.conf /etc/apache2/mods-available/mpm_worker.conf
+#open mpm_prefork module
+RUN a2enmod mpm_prefork
+ADD bulid/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 
 #replace security.conf
 ADD bulid/security.conf /etc/apache2/conf-available/security.conf
