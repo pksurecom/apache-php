@@ -39,6 +39,12 @@ RUN echo "extension=memcached.so" >> /etc/php5/apache2/php.ini
 RUN a2enmod rewrite
 RUN sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
+#php upload file setting
+RUN sed -i "s+;upload_tmp_dir =+upload_tmp_dir = /app/Runtime+g" /etc/php5/apache2/php.ini && \
+    sed -i "s+;open_basedir =+open_basedir = /app/Runtime+g" /etc/php5/apache2/php.ini && \
+    sed -i "s+post_max_size = 8M+post_max_size = 16M+g" /etc/php5/apache2/php.ini && \
+    sed -i "s+upload_max_filesize = 2M+upload_max_filesize = 6M+g" /etc/php5/apache2/php.ini
+
 #open mpm_prefork module
 RUN a2enmod mpm_prefork
 ADD bulid/mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
